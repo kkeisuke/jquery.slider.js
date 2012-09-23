@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+/*
+--------------------------------------------------------------------------
+01. .slider
+02. .thumbnails
+--------------------------------------------------------------------------
+*/
+
+/* 01. .slider
+---------------------------------------------------	*/
+.slider{
+    margin:5px;
+    position:relative;
+    width:400px;
+    height:250px;
+    overflow:hidden;
+}
+.slider p{
+    margin:0px;
+    padding:0px;
+    position:absolute;
+    width:400px;
+    height:250px;
+    background:#336699;
+    font-size:6em;
+    color:#fff;
+    line-height:250px;
+    text-align:center;
+}
+
+/* 02. .thumbnails
+---------------------------------------------------	*/
+.thumbnails{
+    margin:5px;
+    padding:0;
+}
+
+.thumbnails li{
+    margin-bottom:5px;
+    display:inline-block;
+    width:76px;
+    height:40px;
+    list-style:none;
+    background:#336699;
+    color:#fff;
+    line-height:40px;
+    text-align:center;
+    cursor:pointer;
+}
