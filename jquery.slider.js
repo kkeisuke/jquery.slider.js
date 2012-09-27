@@ -17,6 +17,8 @@
             auto:true, // 自動スライドショー
             presen:false, // プレゼンモード(auto が強制的に false になります)
             pause:true, // オンマウス時に自動スライドショーを停止
+            swipe:true,
+            swipeOffSet:10,
             direction:"left", // トランジッションの向き top right bottom left が選択可 
             interval:3000, // 自動スライドショーのインターバル
             duration:500, // トランジッションのスピード
@@ -47,9 +49,9 @@
     };
     $.Slider.isAnimate = false;
     $.Slider.R_ARROW = 39;
-	$.Slider.L_ARROW = 37;
+    $.Slider.L_ARROW = 37;
     $.Slider.U_ARROW = 38;
-	$.Slider.D_ARROW = 40;
+    $.Slider.D_ARROW = 40;
     
     /**
      * スライダーメインエリア クラス
@@ -233,7 +235,7 @@
             $.extend(this.option, option);
         },
         _init:function(){
-            if(this.option.presen){
+            if(this.option.presen || this.option.swipe){
                 this.option.auto = false;
                 this.option.pause = false;
             }
@@ -303,6 +305,61 @@
                     }
                 });
             }
+            if(this.option.swipe){
+                this._setSwipeEvent();
+            }
+        },
+        _setSwipeEvent:function(){
+            var that = this;
+            var evEnd = $.Slider.hasTouch ? "touchend" : "mouseup";
+            var evStart = $.Slider.hasTouch ? "touchstart" : "mousedown";
+            var pageX;
+            var pageY;
+            this.$target.on(evStart, function(e){
+                // テキスト選択不可
+                e.preventDefault();
+                if(evStart === "touchstart"){
+                    pageX = e.originalEvent.touches[0].pageX;
+                    pageY = e.originalEvent.touches[0].pageY;
+                }else{
+                    pageX = e.pageX;
+                    pageY = e.pageY;
+                }
+            });
+            this.$target.on(evEnd, function(e){
+                var _pageX;
+                var _pageY;
+                if(evStart === "touchstart"){
+                    _pageX = e.originalEvent.changedTouches[0].pageX;
+                    _pageY = e.originalEvent.changedTouches[0].pageY;
+                }else{
+                    _pageX = e.pageX;
+                    _pageY = e.pageY;
+                }
+                var px = (pageX - _pageX);
+                var absPx = px > 0 ? px : -px;
+                var py = (pageY - _pageY);
+                var absPy = py > 0 ? py : -py;
+                if(!$.Slider.isAnimate){
+                    if(absPx > absPy){
+                        if(absPx > that.option.swipeOffSet){
+                            if(px > 0){
+                                that.slide(1, "left");
+                            }else{
+                                that.slide(-1, "right");
+                            }
+                        }
+                    }else{
+                        if(absPy > that.option.swipeOffSet){
+                            if(py > 0){
+                                that.slide(-1, "bottom");
+                            }else{
+                                that.slide(1, "top");
+                            }
+                        }
+                    }
+                }
+            });
         },
         start:function(){
             var that = this;
