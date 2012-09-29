@@ -42,7 +42,7 @@
         var doc = window.document;
         return doc.hidden || doc.mozHidden || doc.msHidden || doc.webkitHidden;
     };
-    $.Slider.transitionOffSet = 0;
+    $.Slider.transitionOffSet = 100;
     $.Slider.event = {
         change:"changeSlider",
         transitionend:"transitionend MSTransitionEnd webkitTransitionEnd",
