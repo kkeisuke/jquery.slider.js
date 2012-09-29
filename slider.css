@@ -16,6 +16,7 @@
     height:250px;
     overflow:hidden;
 }
+
 .slider p{
     margin:0px;
     padding:0px;
@@ -27,6 +28,17 @@
     color:#fff;
     line-height:250px;
     text-align:center;
+}
+
+@media screen and (max-width: 400px){
+	.slider{
+        margin:2%;
+        width:96%;
+    }
+    .slider p{
+        width:100%;
+        font-size:4em;
+    }
 }
 
 /* 02. .thumbnails

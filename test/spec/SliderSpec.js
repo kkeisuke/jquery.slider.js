@@ -10,8 +10,9 @@
             
             $.extend($.Slider, {
                 auto:true, // 自動スライドショー
-                presen:false, // プレゼンモード(auto が強制的に false になります)
                 pause:true, // オンマウス時に自動スライドショーを停止
+                presen:false, // プレゼンモード(auto が強制的に false になります)
+                swipe:false, // スワイプモード(auto が強制的に false になります)
                 direction:"left", // トランジッションの向き top right bottom left が選択可 
                 interval:3000, // 自動スライドショーのインターバル
                 duration:500, // トランジッションのスピード
@@ -48,17 +49,15 @@
             }
         });
         
-        it("$.Slider.Main.prototype._setTransform & $.Slider.Main.prototype._setdirection テスト", function(){
+        it("$.Slider.Main.prototype._change, change テスト", function(){
+            main.change(1);
+            
             expect($.Slider.direction).toEqual("left");
             if($.Slider.hasTransition && $.Slider.hasTransform){
                 expect(main.from.transform).toEqual("translate3d(" + main.$current.outerWidth() + "px, 0px, 0px)");
             }else{
-               expect(main.from[$.Slider.direction]).toEqual(main.$current.outerWidth());
+                expect(main.from[$.Slider.direction]).toEqual(main.$current.outerWidth());
             }
-        });
-        
-        it("$.Slider.Main.prototype._change, change テスト", function(){
-            main.change(1);
             
             expect($.Slider.isAnimate).toBeTruthy();
             expect(main.$pre).toEqual($testMainNode.eq(0));

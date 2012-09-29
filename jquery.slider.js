@@ -15,10 +15,10 @@
         this.thum = null;
         this.option = {
             auto:true, // 自動スライドショー
-            presen:false, // プレゼンモード(auto が強制的に false になります)
             pause:true, // オンマウス時に自動スライドショーを停止
-            swipe:true,
-            swipeOffSet:10,
+            presen:false, // プレゼンモード(auto が強制的に false になります)
+            swipe:false, // スワイプモード(auto が強制的に false になります)
+            swipeOffSet:10, // スワイプ時の無効距離
             direction:"left", // トランジッションの向き top right bottom left が選択可 
             interval:3000, // 自動スライドショーのインターバル
             duration:500, // トランジッションのスピード
@@ -36,7 +36,8 @@
      */
     $.Slider.hasTouch = "ontouchstart" in window;
     $.Slider.hasTransition = String($("<div>").css("transition", "0").attr("style")).indexOf("transition") !== -1;
-    $.Slider.hasTransform = String($("<div>").css("transform", "translate(0)").attr("style")).indexOf("transform") !== -1;
+    $.Slider.transform = String($("<div>").css("transform", "translate(0)").attr("style")).split(":").shift();
+    $.Slider.hasTransform = $.Slider.transform.indexOf("transform") !== -1;
     $.Slider.gethidden = function(){
         var doc = window.document;
         return doc.hidden || doc.mozHidden || doc.msHidden || doc.webkitHidden;
@@ -79,11 +80,9 @@
                 if(index !== -1){
                     $.Slider.easing = $.Slider.easing.slice(0, index);
                 }
-                this._setTransform();
                 this._setTransitionEvent();
             }else{
                 $.Slider.easing = $.Slider.easing.split("-").join("");
-                this._setdirection();
             }
         },
         _setTransform:function(){
@@ -104,12 +103,12 @@
                     break;
             }
             this.to.transform = "translate3d(0px, 0px, 0px)";
-            this.to.transition = ($.Slider.duration - $.Slider.transitionOffSet) * 0.001 + "s all " + $.Slider.easing;
+            this.to.transition = ($.Slider.duration - $.Slider.transitionOffSet) * 0.001 + "s " + $.Slider.transform + " " + $.Slider.easing;
         },
         _setTransitionEvent:function(){
             var that = this;
-            this.$list.on($.Slider.event.transitionend, function(){
-                if($.Slider.isAnimate){
+            this.$list.on($.Slider.event.transitionend, function(e){
+                if($.Slider.isAnimate && e.originalEvent.propertyName === $.Slider.transform){
                     that.$pre.css({
                         zIndex:"",
                         transition:"",
@@ -171,8 +170,10 @@
         },
         change:function(index){
             if($.Slider.hasTransition && $.Slider.hasTransform){
+                this._setTransform();
                 this._changeTransition(index);
             }else{
+                this._setdirection();
                 this._change(index);
             }
         },
@@ -424,6 +425,7 @@
 $(function(){
     $(".slider").slider({
         // presen:true,
+        // swipe:true,
         thum:".thumbnails",
         easing:"ease-In-Out-Cubic", // CSS3 と JSでの名前の違いあり。(CSS3では Cubic を省略)
         duration:800,
