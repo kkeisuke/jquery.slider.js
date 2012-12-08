@@ -1,8 +1,8 @@
 # jquery.slider.js
 
-transform & transition によるスライダーjQueryプラグイン  
+transform & transition によるスライダー jQuery プラグイン  
 transform & transition 非対応環境では通常のアニメーション  
-chrome, IE9, GalaxyNexus でのみ検証済み。
+chrome, IE9, GalaxyNexus(chrome) でのみ検証済み。
 
 ##  Demo
 
