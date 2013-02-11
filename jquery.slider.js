@@ -16,8 +16,8 @@
         this.option = {
             auto:true, // 自動スライドショー
             pause:true, // オンマウス時に自動スライドショーを停止
-            presen:false, // プレゼンモード(auto が強制的に false になります)
-            swipe:false, // スワイプモード(auto が強制的に false になります)
+            presen:false, // プレゼンモード
+            swipe:false, // スワイプモード
             swipeOffSet:10, // スワイプ時の無効距離
             direction:"left", // トランジッションの向き top right bottom left が選択可 
             interval:3000, // 自動スライドショーのインターバル
@@ -236,10 +236,6 @@
             $.extend(this.option, option);
         },
         _init:function(){
-            if(this.option.presen || this.option.swipe){
-                this.option.auto = false;
-                this.option.pause = false;
-            }
             $.extend($.Slider, this.option);
             this.main = new $.Slider.Main(this.$target.children());
             if(this.option.thum !== ""){
