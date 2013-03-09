@@ -11,8 +11,8 @@
             $.extend($.Slider, {
                 auto:true, // 自動スライドショー
                 pause:true, // オンマウス時に自動スライドショーを停止
-                presen:false, // プレゼンモード
-                swipe:false, // スワイプモード
+                presen:false, // プレゼンモード(auto が強制的に false になります)
+                swipe:false, // スワイプモード(auto が強制的に false になります)
                 direction:"left", // トランジッションの向き top right bottom left が選択可 
                 interval:3000, // 自動スライドショーのインターバル
                 duration:500, // トランジッションのスピード
