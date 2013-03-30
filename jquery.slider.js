@@ -25,9 +25,9 @@
             duration:500, // トランジッションのスピード
             easing:"linear", // jquery.easing.js を別途使用すれば、イージングの指定も可能
             zIndexOffSet:1000, // z-index のオフセット値
-            thum:"", // セレクタを指定することで、サムネイルにも対応,
-            pre:"", // セレクタを指定することで、サムネイルにも対応,
-            next:"", // セレクタを指定することで、サムネイルにも対応,
+            thum:"", // セレクタを指定することで、サムネイルにも対応
+            pre:"", // セレクタを指定することで、サムネイルにも対応
+            next:"", // セレクタを指定することで、サムネイルにも対応
             cursor:"e-resize", // swipe が true の時、cursor が変わる。
             init:function(main, thum){}, // 初期化時コールバック
             change:function(main, thum){/* console.log(this, main, thum) */}, // 切替時コールバック

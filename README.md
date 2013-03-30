@@ -38,7 +38,10 @@ chrome, IE9, GalaxyNexus(chrome) でのみ検証済み。
             easing:"linear", // jquery.easing.js を別途使用すれば、イージングの指定も可能
             // 例 ease-In-Out-Cubic ( CSS3 と JSでの名前の違いあり。CSS3 では Cubic を省略)
             zIndexOffSet:1000, // z-index のオフセット値
-            thum:"", // セレクタを指定することで、サムネイルにも対応,
+            thum:"", // セレクタを指定することで、サムネイルにも対応
+            pre:"", // セレクタを指定することで、サムネイルにも対応
+            next:"", // セレクタを指定することで、サムネイルにも対応
+            cursor:"e-resize", // swipe が true の時、cursor が変わる。
             init:function(main, thum){}, // 初期化時コールバック
             change:function(main, thum){}, // 切替時コールバック
             complete:function(main, thum){} // 切り替え終了時コールバック
