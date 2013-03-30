@@ -13,6 +13,7 @@
         this.intervalID = null;
         this.main = null;
         this.thum = null;
+        this.cv = null;
         this.option = {
             auto:true, // 自動スライドショー
             pause:true, // オンマウス時に自動スライドショーを停止
@@ -25,6 +26,8 @@
             easing:"linear", // jquery.easing.js を別途使用すれば、イージングの指定も可能
             zIndexOffSet:1000, // z-index のオフセット値
             thum:"", // セレクタを指定することで、サムネイルにも対応,
+            pre:"", // セレクタを指定することで、サムネイルにも対応,
+            next:"", // セレクタを指定することで、サムネイルにも対応,
             init:function(main, thum){}, // 初期化時コールバック
             change:function(main, thum){/* console.log(this, main, thum) */}, // 切替時コールバック
             complete:function(main, thum){/* console.log(thum.$pre, thum.$current) */} // 切り替え終了時コールバック
@@ -38,6 +41,7 @@
     $.Slider.hasTransition = String($("<div>").css("transition", "0").attr("style")).indexOf("transition") !== -1;
     $.Slider.transform = String($("<div>").css("transform", "translate(0)").attr("style")).split(":").shift();
     $.Slider.hasTransform = $.Slider.transform.indexOf("transform") !== -1;
+    $.Slider.evClick = $.Slider.hasTouch ? "touchend" : "click";
     $.Slider.gethidden = function(){
         var doc = window.document;
         return doc.hidden || doc.mozHidden || doc.msHidden || doc.webkitHidden;
@@ -213,8 +217,7 @@
         },
         _setEvent:function(){
             var that = this;
-            var ev = $.Slider.hasTouch ? "touchend" : "click";
-            this.$list.on(ev, function(){
+            this.$list.on($.Slider.evClick, function(){
                 if(!$.Slider.isAnimate && that.$current.index() !== $(this).index()){
                     $(that).trigger($.Slider.event.change, [this]);
                 }
@@ -223,6 +226,45 @@
         change:function(index){
             this.$pre = this.$current;
             this.$current = this.$list.eq(index);
+        }
+    };
+    
+    /**
+     * スライダーコントローラビュー クラス
+     */
+    $.Slider.ControllerView = function(){
+        this.$pre = null;
+        this.$next = null;
+        this._init();
+    };
+    
+    $.Slider.ControllerView.prototype = {
+        _init:function(){
+            if($.Slider.pre !== ""){
+                this.$pre = $($.Slider.pre);
+            }
+            if($.Slider.next !== ""){
+                this.$next = $($.Slider.next);
+            }
+            this._setEvent();
+        },
+        _setEvent:function(){
+            var that = this;
+            if(this.$pre !== null){
+                this.$pre.on($.Slider.evClick, function(){
+                    that._triggerChange.call(that, -1);
+                });
+            }
+            if(this.$next !== null){
+                this.$next.on($.Slider.evClick, function(){
+                    that._triggerChange.call(that, 1);
+                });
+            }
+        },
+        _triggerChange:function(offset){
+            if(!$.Slider.isAnimate){
+                $(this).trigger($.Slider.event.change, [offset]);
+            }
         }
     };
     
@@ -243,7 +285,10 @@
             $.extend($.Slider, this.option);
             this.main = new $.Slider.Main(this.$target.children());
             if(this.option.thum !== ""){
-                this.thum = new $.Slider.Thum(); 
+                this.thum = new $.Slider.Thum();
+            }
+            if(this.option.pre !== "" || this.option.next !== ""){
+                this.cv = new $.Slider.ControllerView();
             }
             this.option.init.call(this, this.main, this.thum);
             this.start();
@@ -270,6 +315,11 @@
             if(this.thum){
                 $(this.thum).on($.Slider.event.change, function(e, current){
                     that.restart.call(that, $(current).index());
+                });
+            }
+            if(this.cv){
+                $(this.cv).on($.Slider.event.change, function(e, offset){
+                    that.restartOffset.call(that, offset);
                 });
             }
             $(window.document).on($.Slider.event.visibilitychange, function(){
@@ -379,6 +429,17 @@
             this.change.call(this);
             this.start.call(this);
         },
+        restartOffset:function(offset){
+            var max = this.main.num - 1;
+            var count = this.current + offset;
+            if(count > max){
+                count = 0;
+            }
+            if(count < 0){
+                count = max;
+            }
+            this.restart(count);
+        },
         change:function(){
             this.main.change(this.current);
             if(this.thum){
@@ -425,8 +486,10 @@
 $(function(){
     $(".slider").slider({
         // presen:true,
-        // swipe:true,
+        swipe:true,
         thum:".thumbnails",
+        pre:".pre",
+        next:".next",
         easing:"ease-In-Out-Cubic", // CSS3 と JSでの名前の違いあり。(CSS3では Cubic を省略)
         duration:800,
         init:function(main, thum){

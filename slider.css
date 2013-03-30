@@ -4,6 +4,8 @@
 --------------------------------------------------------------------------
 01. .slider
 02. .thumbnails
+03. .pre
+04. .next
 --------------------------------------------------------------------------
 */
 
@@ -18,8 +20,8 @@
 }
 
 .slider p{
-    margin:0px;
-    padding:0px;
+    margin:0;
+    padding:0;
     position:absolute;
     width:400px;
     height:250px;
@@ -41,17 +43,43 @@
     }
 }
 
+.controller{
+    margin:5px;
+    padding:0;
+}
+
 /* 02. .thumbnails
 ---------------------------------------------------	*/
 .thumbnails{
-    margin:5px;
+    margin:0;
     padding:0;
+    display:inline-block;
 }
 
 .thumbnails li{
     margin-bottom:5px;
     display:inline-block;
-    width:76px;
+    width:66px;
+    height:40px;
+    list-style:none;
+    background:#336699;
+    color:#fff;
+    line-height:40px;
+    font-size:14px;
+    text-align:center;
+    cursor:pointer;
+}
+
+/* 03. .pre
+    04. .next
+---------------------------------------------------	*/
+.pre,
+.next{
+    margin:0;
+    padding:0;
+    margin-bottom:5px;
+    display:inline-block;
+    width:20px;
     height:40px;
     list-style:none;
     background:#336699;
