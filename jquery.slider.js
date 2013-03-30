@@ -28,6 +28,7 @@
             thum:"", // セレクタを指定することで、サムネイルにも対応,
             pre:"", // セレクタを指定することで、サムネイルにも対応,
             next:"", // セレクタを指定することで、サムネイルにも対応,
+            cursor:"e-resize", // swipe が true の時、cursor が変わる。
             init:function(main, thum){}, // 初期化時コールバック
             change:function(main, thum){/* console.log(this, main, thum) */}, // 切替時コールバック
             complete:function(main, thum){/* console.log(thum.$pre, thum.$current) */} // 切り替え終了時コールバック
@@ -366,6 +367,9 @@
             var evStart = $.Slider.hasTouch ? "touchstart" : "mousedown";
             var pageX;
             var pageY;
+            this.$target.css({
+                cursor:this.option.cursor
+            });
             this.$target.on(evStart, function(e){
                 // テキスト選択不可
                 e.preventDefault();
