@@ -1,5 +1,5 @@
 /**
- * @fileoverview 簡易的な jQuery スライダープラグイン 2012/09/23
+ * @fileoverview 簡易的な jQuery スライダープラグイン 2013/03/31
  */
 (function($, window, document, undefined){
     
