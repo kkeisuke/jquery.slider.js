@@ -4,8 +4,6 @@
 --------------------------------------------------------------------------
 01. .slider
 02. .thumbnails
-03. .pre
-04. .next
 --------------------------------------------------------------------------
 */
 
@@ -32,8 +30,15 @@
     text-align:center;
 }
 
+.controller{
+    margin:5px;
+    padding:0;
+    width:400px;
+}
+
 @media screen and (max-width: 400px){
-	.slider{
+	.slider,
+    .controller{
         margin:2%;
         width:96%;
     }
@@ -41,11 +46,6 @@
         width:100%;
         font-size:4em;
     }
-}
-
-.controller{
-    margin:5px;
-    padding:0;
 }
 
 /* 02. .thumbnails
@@ -56,30 +56,12 @@
     display:inline-block;
 }
 
-.thumbnails li{
-    margin-bottom:5px;
-    display:inline-block;
-    width:66px;
-    height:40px;
-    list-style:none;
-    background:#336699;
-    color:#fff;
-    line-height:40px;
-    font-size:14px;
-    text-align:center;
-    cursor:pointer;
-}
-
-/* 03. .pre
-   04. .next
----------------------------------------------------	*/
+.thumbnails li,
 .pre,
 .next{
-    margin:0;
-    padding:0;
     margin-bottom:5px;
     display:inline-block;
-    width:20px;
+    width:76px;
     height:40px;
     list-style:none;
     background:#336699;
