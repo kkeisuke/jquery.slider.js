@@ -315,7 +315,8 @@
             }
             if(this.thum){
                 $(this.thum).on($.Slider.event.change, function(e, current){
-                    that.restart.call(that, $(current).index());
+                    var index = $(current).index();
+                    that.restart.call(that, index, index - that.current);
                 });
             }
             if(this.cv){
@@ -416,6 +417,27 @@
                 }
             });
         },
+        _getDirection:function(offset){
+            var direction;
+            switch(this.option.direction){
+                case "left":
+                    direction = offset > 0 ? "left" : "right";
+                    break;
+                case "right":
+                    direction = offset > 0 ? "right" : "left";
+                    break;
+                case "top":
+                    direction = offset > 0 ? "top" : "bottom";
+                    break;
+                case "bottom":
+                    direction = offset > 0 ? "bottom" : "top";
+                    break;
+                default:
+                    direction = "";
+                    break;
+            }
+            return direction;
+        },
         start:function(){
             var that = this;
             if(this.option.auto){
@@ -424,10 +446,14 @@
                 }, this.option.interval);
             }
         },
-        restart:function(index){
+        restart:function(index, offset){
             if(this.intervalID){
                 window.clearInterval(this.intervalID);
                 this.intervalID = null;
+            }
+            if(offset !== null){
+                // Main から参照できる $.Slider.direction を変更
+                $.Slider.direction = this._getDirection(offset);
             }
             this.current = index;
             this.change.call(this);
@@ -442,7 +468,7 @@
             if(count < 0){
                 count = max;
             }
-            this.restart(count);
+            this.restart(count, offset);
         },
         change:function(){
             this.main.change(this.current);
